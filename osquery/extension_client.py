@@ -44,7 +44,7 @@ class ExtensionClient(object):
         if sys.platform == WINDOWS_PLATFORM:
             sock = TPipe(pipe_name=self.path)
         else:
-            self.path += ".{}".format(uuid) if uuid else ""
+            self.path += f".{uuid}" if uuid else ""
             sock = TSocket.TSocket(unix_socket=self.path)
         self._transport = TTransport.TBufferedTransport(sock)
         self._protocol = TBinaryProtocol.TBinaryProtocol(self._transport)

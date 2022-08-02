@@ -54,10 +54,7 @@ class LintCommand(Command):
 
     def run(self):
         """Run the command"""
-        system("pylint %s %s" % (
-            " ".join(self._pylint_options),
-            " ".join(self._lint_paths),
-        ))
+        system(f'pylint {" ".join(self._pylint_options)} {" ".join(self._lint_paths)}')
 
 with open("README.md", "r") as f:
     README = f.read()
@@ -65,14 +62,22 @@ with open("README.md", "r") as f:
 with open("osquery/__init__.py", "r") as f:
     __INIT__ = f.read()
 
-TITLE = re.search(r'^__title__\s*=\s*[\'"]([^\'"]*)[\'"]',
-                  __INIT__, re.MULTILINE).group(1)
-VERSION = re.search(r'^__version__\s*=\s*[\'"]([^\'"]*)[\'"]',
-                    __INIT__, re.MULTILINE).group(1)
-AUTHOR = re.search(r'^__author__\s*=\s*[\'"]([^\'"]*)[\'"]',
-                   __INIT__, re.MULTILINE).group(1)
-LICENSE = re.search(r'^__license__\s*=\s*[\'"]([^\'"]*)[\'"]',
-                    __INIT__, re.MULTILINE).group(1)
+TITLE = re.search(
+    r'^__title__\s*=\s*[\'"]([^\'"]*)[\'"]', __INIT__, re.MULTILINE
+)[1]
+
+VERSION = re.search(
+    r'^__version__\s*=\s*[\'"]([^\'"]*)[\'"]', __INIT__, re.MULTILINE
+)[1]
+
+AUTHOR = re.search(
+    r'^__author__\s*=\s*[\'"]([^\'"]*)[\'"]', __INIT__, re.MULTILINE
+)[1]
+
+LICENSE = re.search(
+    r'^__license__\s*=\s*[\'"]([^\'"]*)[\'"]', __INIT__, re.MULTILINE
+)[1]
+
 
 setup(name=TITLE,
       version=VERSION,

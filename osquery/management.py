@@ -134,7 +134,7 @@ class SpawnInstance(object):
             stderr=subprocess.PIPE)
         self.connection = ExtensionClient(path=self._socket[1])
         if not self.is_running():
-            raise Exception("Cannot start process from path: %s" % (self.path))
+            raise Exception(f"Cannot start process from path: {self.path}")
 
         # Attempt to open the extension client.
         delay = 0
@@ -147,13 +147,11 @@ class SpawnInstance(object):
                 delay += interval
         self.instance.kill()
         self.instance = None
-        raise Exception("Cannot open connection: %s" % (self._socket[1]))
+        raise Exception(f"Cannot open connection: {self._socket[1]}")
 
     def is_running(self):
         """Check if the instance has spawned."""
-        if self.instance is None:
-            return False
-        return self.instance.poll() is None
+        return False if self.instance is None else self.instance.poll() is None
 
     @property
     def client(self):
@@ -222,7 +220,7 @@ def start_extension(name="<unknown>",
 
     if not client.open(args.timeout):
         if args.verbose:
-            message = "Could not open socket %s" % args.socket
+            message = f"Could not open socket {args.socket}"
             raise ExtensionException(
                 code=1,
                 message=message,
@@ -242,7 +240,7 @@ def start_extension(name="<unknown>",
             registry=ext_manager.registry(),
         )
     except socket.error:
-        message = "Could not connect to %s" % args.socket
+        message = f"Could not connect to {args.socket}"
         raise ExtensionException(
             code=1,
             message=message,
@@ -266,10 +264,12 @@ def start_extension(name="<unknown>",
 
     transport = None
     if sys.platform == 'win32':
-        transport = TPipeServer(pipe_name="{}.{}".format(args.socket, status.uuid))
+        transport = TPipeServer(pipe_name=f"{args.socket}.{status.uuid}")
     else:
         transport = TSocket.TServerSocket(
-            unix_socket=args.socket + "." + str(status.uuid))
+            unix_socket=f"{args.socket}.{str(status.uuid)}"
+        )
+
 
     tfactory = TTransport.TBufferedTransportFactory()
     pfactory = TBinaryProtocol.TBinaryProtocolFactory()
@@ -294,7 +294,7 @@ def deregister_extension():
         status = client.extension_manager_client().deregisterExtension(
             ext_manager.uuid)
     except socket.error:
-        message = "Could not connect to %s" % args.socket
+        message = f"Could not connect to {args.socket}"
         raise ExtensionException(
             code=1,
             message=message,

@@ -30,16 +30,8 @@ class MockTablePlugin(osquery.TablePlugin):
         ]
 
     def generate(self, context):
-        query_data = []
-
-        for _ in range(2):
-            row = {}
-            row["foo"] = "bar"
-            row["baz"] = "baz"
-            row["int"] = 42
-            query_data.append(row)
-
-        return query_data
+        row = {"foo": "bar", "baz": "baz", "int": 42}
+        return [row for _ in range(2)]
 
 class TestTablePlugin(unittest.TestCase):
     """Tests for osquery.TablePlugin"""

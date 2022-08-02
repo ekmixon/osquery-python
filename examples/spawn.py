@@ -3,6 +3,7 @@
 simple script which runs a query from the command-line by spawning osqueryd
 """
 
+
 import sys
 import osquery
 
@@ -14,12 +15,12 @@ if __name__ == "__main__":
     INSTANCE.open()
     RESULTS = INSTANCE.client.query(sys.argv[1])
     if RESULTS.status.code != 0:
-        print("Error running the query: %s" % RESULTS.status.message)
+        print(f"Error running the query: {RESULTS.status.message}")
         sys.exit(1)
 
     for row in RESULTS.response:
         print("=" * 80)
         for key, val in row.iteritems():
-            print("%s => %s" % (key, val))
+            print(f"{key} => {val}")
     if len(RESULTS.response) > 0:
         print("=" * 80)

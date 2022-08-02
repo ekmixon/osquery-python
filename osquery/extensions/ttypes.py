@@ -106,7 +106,7 @@ class InternalOptionInfo(object):
     def __repr__(self):
         L = ['%s=%r' % (key, value)
              for key, value in self.__dict__.items()]
-        return '%s(%s)' % (self.__class__.__name__, ', '.join(L))
+        return f"{self.__class__.__name__}({', '.join(L)})"
 
     def __eq__(self, other):
         return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
@@ -202,7 +202,7 @@ class InternalExtensionInfo(object):
     def __repr__(self):
         L = ['%s=%r' % (key, value)
              for key, value in self.__dict__.items()]
-        return '%s(%s)' % (self.__class__.__name__, ', '.join(L))
+        return f"{self.__class__.__name__}({', '.join(L)})"
 
     def __eq__(self, other):
         return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
@@ -286,7 +286,7 @@ class ExtensionStatus(object):
     def __repr__(self):
         L = ['%s=%r' % (key, value)
              for key, value in self.__dict__.items()]
-        return '%s(%s)' % (self.__class__.__name__, ', '.join(L))
+        return f"{self.__class__.__name__}({', '.join(L)})"
 
     def __eq__(self, other):
         return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
@@ -321,30 +321,24 @@ class ExtensionResponse(object):
             (fname, ftype, fid) = iprot.readFieldBegin()
             if ftype == TType.STOP:
                 break
-            if fid == 1:
-                if ftype == TType.STRUCT:
-                    self.status = ExtensionStatus()
-                    self.status.read(iprot)
-                else:
-                    iprot.skip(ftype)
-            elif fid == 2:
-                if ftype == TType.LIST:
-                    self.response = []
-                    (_etype3, _size0) = iprot.readListBegin()
-                    for _i4 in range(_size0):
-                        _elem5 = {}
-                        (_ktype7, _vtype8, _size6) = iprot.readMapBegin()
-                        for _i10 in range(_size6):
-                            _key11 = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
-                            _val12 = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
-                            _elem5[_key11] = _val12
-                        iprot.readMapEnd()
-                        self.response.append(_elem5)
-                    iprot.readListEnd()
-                else:
-                    iprot.skip(ftype)
-            else:
+            if fid == 1 and ftype == TType.STRUCT:
+                self.status = ExtensionStatus()
+                self.status.read(iprot)
+            elif fid == 1 or fid == 2 and ftype != TType.LIST or fid != 2:
                 iprot.skip(ftype)
+            else:
+                self.response = []
+                (_etype3, _size0) = iprot.readListBegin()
+                for _i4 in range(_size0):
+                    _elem5 = {}
+                    (_ktype7, _vtype8, _size6) = iprot.readMapBegin()
+                    for _i10 in range(_size6):
+                        _key11 = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
+                        _val12 = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
+                        _elem5[_key11] = _val12
+                    iprot.readMapEnd()
+                    self.response.append(_elem5)
+                iprot.readListEnd()
             iprot.readFieldEnd()
         iprot.readStructEnd()
 
@@ -377,7 +371,7 @@ class ExtensionResponse(object):
     def __repr__(self):
         L = ['%s=%r' % (key, value)
              for key, value in self.__dict__.items()]
-        return '%s(%s)' % (self.__class__.__name__, ', '.join(L))
+        return f"{self.__class__.__name__}({', '.join(L)})"
 
     def __eq__(self, other):
         return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
@@ -464,7 +458,7 @@ class ExtensionException(TException):
     def __repr__(self):
         L = ['%s=%r' % (key, value)
              for key, value in self.__dict__.items()]
-        return '%s(%s)' % (self.__class__.__name__, ', '.join(L))
+        return f"{self.__class__.__name__}({', '.join(L)})"
 
     def __eq__(self, other):
         return isinstance(other, self.__class__) and self.__dict__ == other.__dict__

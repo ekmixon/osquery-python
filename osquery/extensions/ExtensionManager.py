@@ -251,7 +251,10 @@ class Processor(osquery.extensions.Extension.Processor, Iface, TProcessor):
         if name not in self._processMap:
             iprot.skip(TType.STRUCT)
             iprot.readMessageEnd()
-            x = TApplicationException(TApplicationException.UNKNOWN_METHOD, 'Unknown function %s' % (name))
+            x = TApplicationException(
+                TApplicationException.UNKNOWN_METHOD, f'Unknown function {name}'
+            )
+
             oprot.writeMessageBegin(name, TMessageType.EXCEPTION, seqid)
             x.write(oprot)
             oprot.writeMessageEnd()
@@ -411,7 +414,7 @@ class extensions_args(object):
     def __repr__(self):
         L = ['%s=%r' % (key, value)
              for key, value in self.__dict__.items()]
-        return '%s(%s)' % (self.__class__.__name__, ', '.join(L))
+        return f"{self.__class__.__name__}({', '.join(L)})"
 
     def __eq__(self, other):
         return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
@@ -442,18 +445,15 @@ class extensions_result(object):
             (fname, ftype, fid) = iprot.readFieldBegin()
             if ftype == TType.STOP:
                 break
-            if fid == 0:
-                if ftype == TType.MAP:
-                    self.success = {}
-                    (_ktype26, _vtype27, _size25) = iprot.readMapBegin()
-                    for _i29 in range(_size25):
-                        _key30 = iprot.readI64()
-                        _val31 = InternalExtensionInfo()
-                        _val31.read(iprot)
-                        self.success[_key30] = _val31
-                    iprot.readMapEnd()
-                else:
-                    iprot.skip(ftype)
+            if fid == 0 and ftype == TType.MAP:
+                self.success = {}
+                (_ktype26, _vtype27, _size25) = iprot.readMapBegin()
+                for _i29 in range(_size25):
+                    _key30 = iprot.readI64()
+                    _val31 = InternalExtensionInfo()
+                    _val31.read(iprot)
+                    self.success[_key30] = _val31
+                iprot.readMapEnd()
             else:
                 iprot.skip(ftype)
             iprot.readFieldEnd()
@@ -481,7 +481,7 @@ class extensions_result(object):
     def __repr__(self):
         L = ['%s=%r' % (key, value)
              for key, value in self.__dict__.items()]
-        return '%s(%s)' % (self.__class__.__name__, ', '.join(L))
+        return f"{self.__class__.__name__}({', '.join(L)})"
 
     def __eq__(self, other):
         return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
@@ -523,7 +523,7 @@ class options_args(object):
     def __repr__(self):
         L = ['%s=%r' % (key, value)
              for key, value in self.__dict__.items()]
-        return '%s(%s)' % (self.__class__.__name__, ', '.join(L))
+        return f"{self.__class__.__name__}({', '.join(L)})"
 
     def __eq__(self, other):
         return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
@@ -554,18 +554,15 @@ class options_result(object):
             (fname, ftype, fid) = iprot.readFieldBegin()
             if ftype == TType.STOP:
                 break
-            if fid == 0:
-                if ftype == TType.MAP:
-                    self.success = {}
-                    (_ktype35, _vtype36, _size34) = iprot.readMapBegin()
-                    for _i38 in range(_size34):
-                        _key39 = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
-                        _val40 = InternalOptionInfo()
-                        _val40.read(iprot)
-                        self.success[_key39] = _val40
-                    iprot.readMapEnd()
-                else:
-                    iprot.skip(ftype)
+            if fid == 0 and ftype == TType.MAP:
+                self.success = {}
+                (_ktype35, _vtype36, _size34) = iprot.readMapBegin()
+                for _i38 in range(_size34):
+                    _key39 = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
+                    _val40 = InternalOptionInfo()
+                    _val40.read(iprot)
+                    self.success[_key39] = _val40
+                iprot.readMapEnd()
             else:
                 iprot.skip(ftype)
             iprot.readFieldEnd()
@@ -593,7 +590,7 @@ class options_result(object):
     def __repr__(self):
         L = ['%s=%r' % (key, value)
              for key, value in self.__dict__.items()]
-        return '%s(%s)' % (self.__class__.__name__, ', '.join(L))
+        return f"{self.__class__.__name__}({', '.join(L)})"
 
     def __eq__(self, other):
         return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
@@ -628,42 +625,36 @@ class registerExtension_args(object):
             (fname, ftype, fid) = iprot.readFieldBegin()
             if ftype == TType.STOP:
                 break
-            if fid == 1:
-                if ftype == TType.STRUCT:
-                    self.info = InternalExtensionInfo()
-                    self.info.read(iprot)
-                else:
-                    iprot.skip(ftype)
-            elif fid == 2:
-                if ftype == TType.MAP:
-                    self.registry = {}
-                    (_ktype44, _vtype45, _size43) = iprot.readMapBegin()
-                    for _i47 in range(_size43):
-                        _key48 = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
-                        _val49 = {}
-                        (_ktype51, _vtype52, _size50) = iprot.readMapBegin()
-                        for _i54 in range(_size50):
-                            _key55 = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
-                            _val56 = []
-                            (_etype60, _size57) = iprot.readListBegin()
-                            for _i61 in range(_size57):
-                                _elem62 = {}
-                                (_ktype64, _vtype65, _size63) = iprot.readMapBegin()
-                                for _i67 in range(_size63):
-                                    _key68 = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
-                                    _val69 = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
-                                    _elem62[_key68] = _val69
-                                iprot.readMapEnd()
-                                _val56.append(_elem62)
-                            iprot.readListEnd()
-                            _val49[_key55] = _val56
-                        iprot.readMapEnd()
-                        self.registry[_key48] = _val49
-                    iprot.readMapEnd()
-                else:
-                    iprot.skip(ftype)
-            else:
+            if fid == 1 and ftype == TType.STRUCT:
+                self.info = InternalExtensionInfo()
+                self.info.read(iprot)
+            elif fid == 1 or fid == 2 and ftype != TType.MAP or fid != 2:
                 iprot.skip(ftype)
+            else:
+                self.registry = {}
+                (_ktype44, _vtype45, _size43) = iprot.readMapBegin()
+                for _i47 in range(_size43):
+                    _key48 = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
+                    _val49 = {}
+                    (_ktype51, _vtype52, _size50) = iprot.readMapBegin()
+                    for _i54 in range(_size50):
+                        _key55 = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
+                        _val56 = []
+                        (_etype60, _size57) = iprot.readListBegin()
+                        for _i61 in range(_size57):
+                            _elem62 = {}
+                            (_ktype64, _vtype65, _size63) = iprot.readMapBegin()
+                            for _i67 in range(_size63):
+                                _key68 = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
+                                _val69 = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
+                                _elem62[_key68] = _val69
+                            iprot.readMapEnd()
+                            _val56.append(_elem62)
+                        iprot.readListEnd()
+                        _val49[_key55] = _val56
+                    iprot.readMapEnd()
+                    self.registry[_key48] = _val49
+                iprot.readMapEnd()
             iprot.readFieldEnd()
         iprot.readStructEnd()
 
@@ -704,7 +695,7 @@ class registerExtension_args(object):
     def __repr__(self):
         L = ['%s=%r' % (key, value)
              for key, value in self.__dict__.items()]
-        return '%s(%s)' % (self.__class__.__name__, ', '.join(L))
+        return f"{self.__class__.__name__}({', '.join(L)})"
 
     def __eq__(self, other):
         return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
@@ -735,12 +726,9 @@ class registerExtension_result(object):
             (fname, ftype, fid) = iprot.readFieldBegin()
             if ftype == TType.STOP:
                 break
-            if fid == 0:
-                if ftype == TType.STRUCT:
-                    self.success = ExtensionStatus()
-                    self.success.read(iprot)
-                else:
-                    iprot.skip(ftype)
+            if fid == 0 and ftype == TType.STRUCT:
+                self.success = ExtensionStatus()
+                self.success.read(iprot)
             else:
                 iprot.skip(ftype)
             iprot.readFieldEnd()
@@ -764,7 +752,7 @@ class registerExtension_result(object):
     def __repr__(self):
         L = ['%s=%r' % (key, value)
              for key, value in self.__dict__.items()]
-        return '%s(%s)' % (self.__class__.__name__, ', '.join(L))
+        return f"{self.__class__.__name__}({', '.join(L)})"
 
     def __eq__(self, other):
         return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
@@ -796,11 +784,8 @@ class deregisterExtension_args(object):
             (fname, ftype, fid) = iprot.readFieldBegin()
             if ftype == TType.STOP:
                 break
-            if fid == 1:
-                if ftype == TType.I64:
-                    self.uuid = iprot.readI64()
-                else:
-                    iprot.skip(ftype)
+            if fid == 1 and ftype == TType.I64:
+                self.uuid = iprot.readI64()
             else:
                 iprot.skip(ftype)
             iprot.readFieldEnd()
@@ -824,7 +809,7 @@ class deregisterExtension_args(object):
     def __repr__(self):
         L = ['%s=%r' % (key, value)
              for key, value in self.__dict__.items()]
-        return '%s(%s)' % (self.__class__.__name__, ', '.join(L))
+        return f"{self.__class__.__name__}({', '.join(L)})"
 
     def __eq__(self, other):
         return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
@@ -855,12 +840,9 @@ class deregisterExtension_result(object):
             (fname, ftype, fid) = iprot.readFieldBegin()
             if ftype == TType.STOP:
                 break
-            if fid == 0:
-                if ftype == TType.STRUCT:
-                    self.success = ExtensionStatus()
-                    self.success.read(iprot)
-                else:
-                    iprot.skip(ftype)
+            if fid == 0 and ftype == TType.STRUCT:
+                self.success = ExtensionStatus()
+                self.success.read(iprot)
             else:
                 iprot.skip(ftype)
             iprot.readFieldEnd()
@@ -884,7 +866,7 @@ class deregisterExtension_result(object):
     def __repr__(self):
         L = ['%s=%r' % (key, value)
              for key, value in self.__dict__.items()]
-        return '%s(%s)' % (self.__class__.__name__, ', '.join(L))
+        return f"{self.__class__.__name__}({', '.join(L)})"
 
     def __eq__(self, other):
         return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
@@ -916,11 +898,8 @@ class query_args(object):
             (fname, ftype, fid) = iprot.readFieldBegin()
             if ftype == TType.STOP:
                 break
-            if fid == 1:
-                if ftype == TType.STRING:
-                    self.sql = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
-                else:
-                    iprot.skip(ftype)
+            if fid == 1 and ftype == TType.STRING:
+                self.sql = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
             else:
                 iprot.skip(ftype)
             iprot.readFieldEnd()
@@ -944,7 +923,7 @@ class query_args(object):
     def __repr__(self):
         L = ['%s=%r' % (key, value)
              for key, value in self.__dict__.items()]
-        return '%s(%s)' % (self.__class__.__name__, ', '.join(L))
+        return f"{self.__class__.__name__}({', '.join(L)})"
 
     def __eq__(self, other):
         return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
@@ -975,12 +954,9 @@ class query_result(object):
             (fname, ftype, fid) = iprot.readFieldBegin()
             if ftype == TType.STOP:
                 break
-            if fid == 0:
-                if ftype == TType.STRUCT:
-                    self.success = ExtensionResponse()
-                    self.success.read(iprot)
-                else:
-                    iprot.skip(ftype)
+            if fid == 0 and ftype == TType.STRUCT:
+                self.success = ExtensionResponse()
+                self.success.read(iprot)
             else:
                 iprot.skip(ftype)
             iprot.readFieldEnd()
@@ -1004,7 +980,7 @@ class query_result(object):
     def __repr__(self):
         L = ['%s=%r' % (key, value)
              for key, value in self.__dict__.items()]
-        return '%s(%s)' % (self.__class__.__name__, ', '.join(L))
+        return f"{self.__class__.__name__}({', '.join(L)})"
 
     def __eq__(self, other):
         return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
@@ -1036,11 +1012,8 @@ class getQueryColumns_args(object):
             (fname, ftype, fid) = iprot.readFieldBegin()
             if ftype == TType.STOP:
                 break
-            if fid == 1:
-                if ftype == TType.STRING:
-                    self.sql = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
-                else:
-                    iprot.skip(ftype)
+            if fid == 1 and ftype == TType.STRING:
+                self.sql = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
             else:
                 iprot.skip(ftype)
             iprot.readFieldEnd()
@@ -1064,7 +1037,7 @@ class getQueryColumns_args(object):
     def __repr__(self):
         L = ['%s=%r' % (key, value)
              for key, value in self.__dict__.items()]
-        return '%s(%s)' % (self.__class__.__name__, ', '.join(L))
+        return f"{self.__class__.__name__}({', '.join(L)})"
 
     def __eq__(self, other):
         return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
@@ -1095,12 +1068,9 @@ class getQueryColumns_result(object):
             (fname, ftype, fid) = iprot.readFieldBegin()
             if ftype == TType.STOP:
                 break
-            if fid == 0:
-                if ftype == TType.STRUCT:
-                    self.success = ExtensionResponse()
-                    self.success.read(iprot)
-                else:
-                    iprot.skip(ftype)
+            if fid == 0 and ftype == TType.STRUCT:
+                self.success = ExtensionResponse()
+                self.success.read(iprot)
             else:
                 iprot.skip(ftype)
             iprot.readFieldEnd()
@@ -1124,7 +1094,7 @@ class getQueryColumns_result(object):
     def __repr__(self):
         L = ['%s=%r' % (key, value)
              for key, value in self.__dict__.items()]
-        return '%s(%s)' % (self.__class__.__name__, ', '.join(L))
+        return f"{self.__class__.__name__}({', '.join(L)})"
 
     def __eq__(self, other):
         return isinstance(other, self.__class__) and self.__dict__ == other.__dict__

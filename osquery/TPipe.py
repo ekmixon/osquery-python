@@ -75,7 +75,9 @@ class TPipe(TPipeBase):
                 if e.winerror != winerror.ERROR_PIPE_BUSY:
                     raise TTransportException(
                         TTransportException.NOT_OPEN,
-                        'Failed to open connection to pipe: {}'.format(e))
+                        f'Failed to open connection to pipe: {e}',
+                    )
+
 
             # Successfully connected, break out.
             if h is not None and h.handle != winerror.ERROR_INVALID_HANDLE:
@@ -90,8 +92,9 @@ class TPipe(TPipeBase):
                                      winerror.ERROR_PIPE_BUSY):
                     raise TTransportException(
                         type=TTransportException.UNKNOWN,
-                        message='Client failed to connect to server with {}'.
-                        format(e.args[0]))
+                        message=f'Client failed to connect to server with {e.args[0]}',
+                    )
+
             conns += 1
 
         raise TTransportException(
@@ -114,7 +117,9 @@ class TPipe(TPipeBase):
         if err:
             raise TTransportException(
                 type=TTransportException.UNKNOWN,
-                message='TPipe read failed with GLE={}'.format(err))
+                message=f'TPipe read failed with GLE={err}',
+            )
+
         if len(buff) == 0:
             raise TTransportException(
                 type=TTransportException.END_OF_FILE,
@@ -133,7 +138,9 @@ class TPipe(TPipeBase):
         except Exception as e:
             raise TTransportException(
                 type=TTransportException.UNKNOWN,
-                message='Failed to write to named pipe: ' + str(e))
+                message=f'Failed to write to named pipe: {str(e)}',
+            )
+
 
         if bytesWritten != len(buff):
             raise TTransportException(
@@ -202,7 +209,9 @@ class TPipeServer(TPipeBase, TServerTransportBase):
         if self._handle.handle == winerror.ERROR_INVALID_HANDLE:
             raise TTransportException(
                 type=TTransportException.NOT_OPEN,
-                message='Tcreate_named_pipe failed: {}'.format(err))
+                message=f'Tcreate_named_pipe failed: {err}',
+            )
+
         return True
 
     def initiate_named_connect(self):
@@ -214,7 +223,9 @@ class TPipeServer(TPipeBase, TServerTransportBase):
             except Exception as e:
                 raise TTransportException(
                     type=TTransportException.NOT_OPEN,
-                    message='TConnectNamedPipe failed: {}'.format(str(e)))
+                    message=f'TConnectNamedPipe failed: {str(e)}',
+                )
+
 
             # Successfully connected, break out.
             if ret == winerror.ERROR_PIPE_CONNECTED:

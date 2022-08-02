@@ -110,7 +110,7 @@ class ExtensionManager(Singleton, Iface):
         # - config
         # - logger
         if registry not in ["table", "config", "logger"]:
-            message = "A registry of an unknown type was called: %s" % registry
+            message = f"A registry of an unknown type was called: {registry}"
             return ExtensionResponse(
                 status=ExtensionStatus(code=1, message=message,),
                 response=[],)

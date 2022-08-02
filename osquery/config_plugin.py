@@ -24,11 +24,10 @@ class ConfigPlugin(with_metaclass(ABCMeta, BasePlugin)):
 
         Do not override this method.
         """
-        if "action" in context:
-            if context["action"] == "genConfig":
-                return ExtensionResponse(status=ExtensionStatus(code=0,
-                                                                message="OK",),
-                                         response=self.content(),)
+        if "action" in context and context["action"] == "genConfig":
+            return ExtensionResponse(status=ExtensionStatus(code=0,
+                                                            message="OK",),
+                                     response=self.content(),)
 
         message = "Not a valid config plugin action"
         return ExtensionResponse(status=ExtensionStatus(code=1,
